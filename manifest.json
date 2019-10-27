@@ -1,0 +1,21 @@
+{
+    "lang": "ja-JP",
+    "name": "Your App Long Name",
+    "short_name": "ShortName",
+    "start_url": ".",
+    "display": "fullscreen",
+    "background_color": "#fff",
+    "description": "Your description of the app here.",
+    "icons": [
+        {
+          "src": "images/my-icon-72x72.png",
+          "sizes": "72x72",
+          "type": "image/png"
+        },
+        {
+          "src": "images/my-icon-512x512.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+    ]
+}
