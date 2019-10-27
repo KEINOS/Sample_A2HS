@@ -5,7 +5,56 @@
     <meta name="description" content="Does nothing but when 'Add To Home' button is pushed, it adds the site to user's home as an app. Javascript is required but no jQuery here.">
     <link rel="manifest" href="manifest.json">
     <link rel="shortcut icon" type="image/x-icon" href="images/my-icon-512x512.png" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- START ServiceWorker to Add A2HS -->
+    <script type="text/javascript">
+        /*
+        -----------------------------
+        A2HS (Add To Home Screen)
+        -----------------------------
+        @REF: https://github.com/mdn/pwa-examples/tree/master/a2hs
+        @DOC: https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Add_to_home_screen
+        */
+        $(function(){
+            /* Register service worker to control making site work offline */
+            if('serviceWorker' in navigator) {
+                navigator.serviceWorker
+                    .register('./serviceWorker.js')
+                    .then(function() { console.log('Service Worker Registered'); });
+            }
+            /* Code to handle install prompt on desktop */
+            let deferredPrompt;
+            const addBtn = document.querySelector('.add-button');
+            addBtn.style.display = 'none';
+            window.addEventListener('beforeinstallprompt', (e) => {
+                console.log('Event Listener Registered');
+                // Prevent Chrome 67 and earlier from automatically showing the prompt
+                e.preventDefault();
+                // Stash the event so it can be triggered later.
+                deferredPrompt = e;
+                // Update UI to notify the user they can add to home screen
+                addBtn.style.display = 'block';
+                addBtn.addEventListener('click', (e) => {
+                    console.log('User clicked add-button');
+                    // hide our user interface that shows our A2HS button
+                    addBtn.style.display = 'none';
+                    // Show the prompt
+                    deferredPrompt.prompt();
+                    // Wait for the user to respond to the prompt
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the A2HS prompt');
+                        } else {
+                            console.log('User dismissed the A2HS prompt');
+                        }
+                        deferredPrompt = null;
+                    });
+                });
+            });
+        });
+    </script>
+    <!-- END ServiceWorker to Add A2HS -->
 </head>
 <body>
     <noscript>
@@ -16,53 +65,4 @@
     <p>Hello World!</p>
     <button class="add-button">Add To Home</button>
 </body>
-
-<!-- START ServiceWorker to Add A2HS -->
-<script type="text/javascript">
-/*
------------------------------
-  A2HS (Add To Home Screen)
------------------------------
-@REF: https://github.com/mdn/pwa-examples/tree/master/a2hs
-@DOC: https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Add_to_home_screen
-*/
-
-/* Register service worker to control making site work offline */
-if('serviceWorker' in navigator) {
-    navigator.serviceWorker
-        .register('./serviceWorker.js')
-        .then(function() { console.log('Service Worker Registered'); });
-}
-/* Code to handle install prompt on desktop */
-let deferredPrompt;
-const addBtn = document.querySelector('.add-button');
-addBtn.style.display = 'none';
-window.addEventListener('beforeinstallprompt', (e) => {
-    console.log('Event Listener Registered');
-    // Prevent Chrome 67 and earlier from automatically showing the prompt
-    e.preventDefault();
-    // Stash the event so it can be triggered later.
-    deferredPrompt = e;
-    // Update UI to notify the user they can add to home screen
-    addBtn.style.display = 'block';
-    addBtn.addEventListener('click', (e) => {
-        console.log('User clicked add-button');
-        // hide our user interface that shows our A2HS button
-        addBtn.style.display = 'none';
-        // Show the prompt
-        deferredPrompt.prompt();
-        // Wait for the user to respond to the prompt
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-                console.log('User accepted the A2HS prompt');
-            } else {
-                console.log('User dismissed the A2HS prompt');
-            }
-            deferredPrompt = null;
-        });
-    });
-});
-</script>
-<!-- END ServiceWorker to Add A2HS -->
-
 </html>
