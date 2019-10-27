@@ -2,7 +2,7 @@
 
 This is a simple template of "Add To Home" button implementation.
 
-- DEMO: [https://keinos.github.io/Template_A2HS/]](https://keinos.github.io/Template_A2HS/)
+- DEMO: [https://keinos.github.io/Template_A2HS/](https://keinos.github.io/Template_A2HS/)
 
 For more details about A2HS (Add To Home Screen) see:
 
