@@ -25,6 +25,8 @@ $(document).ready(function(){
 
     /* Code to handle install prompt on desktop */
     let deferredPrompt;
+    let installPromptEvent;
+
     const addBtn = document.querySelector('.add-button');
     addBtn.style.display = 'none';
 
@@ -35,6 +37,7 @@ $(document).ready(function(){
         deferredPrompt = e;
         // Update UI to notify the user they can add to home screen
         addBtn.style.display = 'block';
+
 
         addBtn.addEventListener('click', (e) => {
             console.log('User clicked add-button');
@@ -63,7 +66,7 @@ $(document).ready(function(){
         <p>ES: Este sitio web requiere que Javascript esté habilitado. Active Javascript y vuelva a cargar la página.</p>
         <p>JA: このWebサイトでは、Javascriptを有効にする必要があります。 Javascriptをオンにして、ページをリロードしてください。</p>
     </noscript>
-    <p>Hello World!</p>
+    <p>Hello Worldd!</p>
     <button class="add-button">Add To Home</button>
 </body>
 </html>
